@@ -1,7 +1,0 @@
-김치찌개 만드는 방법
-<<<<<<< HEAD
-asdfasdf
-asdfasdfasdfa
-=======
-다시해보자
->>>>>>> 4023d183f953f1b262eddb6f62243953d7730d5e
