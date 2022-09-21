@@ -13,7 +13,7 @@ app.config['UPLOAD_FOLDER'] = "./static/profile_pics"
 
 SECRET_KEY = 'SPARTA'
 
-client = Mon cgoClient('내AWS아이피', 27017, username="아이디", password="비밀번호")
+client = MongoClient('43.201.23.207', 27017, username="test", password="test")
 db = client.dbsparta_plus_week4
 
 
