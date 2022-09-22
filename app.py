@@ -133,6 +133,7 @@ def posting():
         comment_receive = request.form["comment_give"]
         date_receive = request.form["date_give"]
         commend_list = list(db.posts.find({}, {'_id': False}))
+
         # count = len(commend_list) + 1
         # print(commend_list)
         # print(type(date_receive))
@@ -143,13 +144,18 @@ def posting():
         num_list = sorted(int_list)
         num_last = num_list[-1]
         num = num_last+1
+        title_receive = request.form["title_give"]
+        url_receive = request.form["url_give"]
         doc = {
             "username": user_info["username"],
             "profile_name": user_info["profile_name"],
             "profile_pic_real": user_info["profile_pic_real"],
             "comment": comment_receive,
+            "title": title_receive,
+            "url": url_receive,
             "date": date_receive,
-            "num" : num
+            "num" : num,
+
         }
         db.posts.insert_one(doc)
         return jsonify({"result": "success", 'msg': '포스팅 성공'})

@@ -1,10 +1,14 @@
 function post() {
-    let comment = $("#textarea-post").val()
+    let url = $("#textarea-post1").val()
+    let title = $("#textarea-post2").val()
+    let comment = $("#textarea-post3").val()
     let today = new Date().toISOString()
     $.ajax({
         type: "POST",
         url: "/posting",
         data: {
+            url_give: url,
+            title_give: title,
             comment_give: comment,
             date_give: today
         },
@@ -54,9 +58,12 @@ function get_posts(username) {
                                                     <p>
                                                         <strong>${post['profile_name']}</strong> <small>@${post['username']}</small> <small>${time_before}</small>
                                                         <br>
-                                                        ${post['comment']} <button type="button" onclick="delete_post(${num})">삭제</button>
+                                                        <a href="${post['url']}/" height="5" width="10" target="_blank">${post['title']}</a>
+                                                        <br>
+                                                        ${post['comment']} 
+                                                        <br>
+                                                        <button type="button" onclick="delete_post(${num})">삭제</button>
 <!--                                                        <a class="has-text-right"  href="javascript: delete_post(${num})"><i class="fa fa-trash-o fa-2x" style="color:red"></i></a>-->
-
                                                     </p>
                                                 </div>
                                                 <nav class="level is-mobile">
@@ -80,7 +87,7 @@ function get_posts(username) {
                                         </article>
                                     </div>`
                     $("#post-box").append(html_temp)
-                    console.log(html_temp)
+
                 }
             }
         }
