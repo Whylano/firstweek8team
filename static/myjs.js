@@ -8,12 +8,8 @@ function post() {
         type: "POST",
         url: "/posting",
         data: {
-            url_give: url,
-            title_give: title,
-            comment_give: comment,
-            date_give: today,
-        },
-        success: function (response) {
+            url_give: url, title_give: title, comment_give: comment, date_give: today,
+        }, success: function (response) {
             $("#modal-post").removeClass("is-active")
             window.location.reload()
         }
@@ -28,8 +24,7 @@ function get_posts(username) {
     $.ajax({
         type: "GET",
         url: `/get_posts?username_give=${username}`,
-        data: {},
-        success: function (response) {
+        data: {}, success: function (response) {
             if (response["result"] == "success") {
                 let posts = response["posts"]
                 for (let i = 0; i < posts.length; i++) {
@@ -52,10 +47,9 @@ function get_posts(username) {
                                             <div class="media-content">
                                                 <div class="content">
                                                     <p>
-                                                    <br>
-                                                        <img src="(${post['url']})"/>
-                                                        <br>
                                                         <strong>${post['profile_name']}</strong> <small>@${post['username']}</small> <small>${time_before}</small>
+                                                        <br>
+                                                        <a href="${post['url']}/" height="5" width="10" target="_blank">${post['title']}</a>
                                                         <br>
                                                         ${post['comment']}
                                                     </p>
@@ -126,14 +120,9 @@ function toggle_like(post_id, type) {
     let class_o = {"heart": "fa-heart-o", "star": "fa-star-o", "like": "fa-thumbs-o-up"}
     if ($i_like.hasClass(class_s[type])) {
         $.ajax({
-            type: "POST",
-            url: "/update_like",
-            data: {
-                post_id_give: post_id,
-                type_give: type,
-                action_give: "unlike"
-            },
-            success: function (response) {
+            type: "POST", url: "/update_like", data: {
+                post_id_give: post_id, type_give: type, action_give: "unlike"
+            }, success: function (response) {
                 console.log("unlike")
                 $i_like.addClass(class_o[type]).removeClass(class_s[type])
                 $a_like.find("span.like-num").text(num2str(response["count"]))
@@ -141,14 +130,9 @@ function toggle_like(post_id, type) {
         })
     } else {
         $.ajax({
-            type: "POST",
-            url: "/update_like",
-            data: {
-                post_id_give: post_id,
-                type_give: type,
-                action_give: "like"
-            },
-            success: function (response) {
+            type: "POST", url: "/update_like", data: {
+                post_id_give: post_id, type_give: type, action_give: "like"
+            }, success: function (response) {
                 console.log("like")
                 $i_like.addClass(class_s[type]).removeClass(class_o[type])
                 $a_like.find("span.like-num").text(num2str(response["count"]))

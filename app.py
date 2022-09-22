@@ -6,6 +6,7 @@ from flask import Flask, render_template, jsonify, request, redirect, url_for
 from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta
 
+
 app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.config['UPLOAD_FOLDER'] = "./static/profile_pics"
@@ -60,8 +61,8 @@ def sign_in():
 
     if result is not None:
         payload = {
-            'id': username_receive,
-            'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)  # 로그인 24시간 유지
+         'id': username_receive,
+         'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)  # 로그인 24시간 유지
         }
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256').decode('utf-8')
 
@@ -113,10 +114,10 @@ def save_img():
             filename = secure_filename(file.filename)
             extension = filename.split(".")[-1]
             file_path = f"profile_pics/{username}.{extension}"
-            file.save("./static/" + file_path)
+            file.save("./static/"+file_path)
             new_doc["profile_pic"] = filename
             new_doc["profile_pic_real"] = file_path
-        db.users.update_one({'username': payload['id']}, {'$set': new_doc})
+        db.users.update_one({'username': payload['id']}, {'$set':new_doc})
         return jsonify({"result": "success", 'msg': '프로필을 업데이트했습니다.'})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
@@ -139,8 +140,8 @@ def posting():
             "profile_name": user_info["profile_name"],
             "profile_pic_real": user_info["profile_pic_real"],
             "comment": comment_receive,
-            "title": title_receive,
-            "url": url_receive,
+            "title":title_receive,
+            "url":url_receive,
             "date": date_receive
         }
         db.posts.insert_one(doc)
@@ -156,25 +157,22 @@ def get_posts():
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         my_username = payload["id"]
         username_receive = request.args.get("username_give")
-        if username_receive == "":
+        if username_receive=="":
             posts = list(db.posts.find({}).sort("date", -1).limit(20))
         else:
-            posts = list(db.posts.find({"username": username_receive}).sort("date", -1).limit(20))
+            posts = list(db.posts.find({"username":username_receive}).sort("date", -1).limit(20))
 
         for post in posts:
             post["_id"] = str(post["_id"])
 
             post["count_heart"] = db.likes.count_documents({"post_id": post["_id"], "type": "heart"})
-            post["heart_by_me"] = bool(
-                db.likes.find_one({"post_id": post["_id"], "type": "heart", "username": my_username}))
+            post["heart_by_me"] = bool(db.likes.find_one({"post_id": post["_id"], "type": "heart", "username": my_username}))
 
             post["count_star"] = db.likes.count_documents({"post_id": post["_id"], "type": "star"})
-            post["star_by_me"] = bool(
-                db.likes.find_one({"post_id": post["_id"], "type": "star", "username": my_username}))
+            post["star_by_me"] = bool(db.likes.find_one({"post_id": post["_id"], "type": "star", "username": my_username}))
 
             post["count_like"] = db.likes.count_documents({"post_id": post["_id"], "type": "like"})
-            post["like_by_me"] = bool(
-                db.likes.find_one({"post_id": post["_id"], "type": "like", "username": my_username}))
+            post["like_by_me"] = bool(db.likes.find_one({"post_id": post["_id"], "type": "like", "username": my_username}))
 
         return jsonify({"result": "success", "msg": "포스팅을 가져왔습니다.", "posts": posts})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
@@ -196,7 +194,7 @@ def update_like():
             "username": user_info["username"],
             "type": type_receive
         }
-        if action_receive == "like":
+        if action_receive =="like":
             db.likes.insert_one(doc)
         else:
             db.likes.delete_one(doc)
