@@ -41,7 +41,7 @@ function get_posts(username) {
                     let class_star = post['star_by_me'] ? "fa-star" : "fa-star-o"
                     let class_like = post['like_by_me'] ? "fa-thumbs-up" : "fa-thumbs-o-up"
 
-                    let html_temp = `<div class="box" id="post-${i}">
+                    let html_temp = `<div class="box" id="${post["_id"]}">
                                         
                                         <article class="media">
                                         
