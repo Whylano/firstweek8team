@@ -1,12 +1,17 @@
 function post() {
-    let comment = $("#textarea-post").val()
+    let url = $("#textarea-post1").val()
+    let title = $("#textarea-post2").val()
+    let comment = $("#textarea-post3").val()
     let today = new Date().toISOString()
+
     $.ajax({
         type: "POST",
         url: "/posting",
         data: {
+            url_give: url,
+            title_give: title,
             comment_give: comment,
-            date_give: today
+            date_give: today,
         },
         success: function (response) {
             $("#modal-post").removeClass("is-active")
@@ -32,8 +37,8 @@ function get_posts(username) {
                     let time_post = new Date(post["date"])
                     let time_before = time2str(time_post)
 
-                    let class_heart = post['heart_by_me'] ? "fa-heart": "fa-heart-o"
-                    let class_star = post['star_by_me'] ? "fa-star": "fa-star-o"
+                    let class_heart = post['heart_by_me'] ? "fa-heart" : "fa-heart-o"
+                    let class_star = post['star_by_me'] ? "fa-star" : "fa-star-o"
                     let class_like = post['like_by_me'] ? "fa-thumbs-up" : "fa-thumbs-o-up"
 
                     let html_temp = `<div class="box" id="${post["_id"]}">
@@ -47,6 +52,9 @@ function get_posts(username) {
                                             <div class="media-content">
                                                 <div class="content">
                                                     <p>
+                                                    <br>
+                                                        <img src="(${post['url']})"/>
+                                                        <br>
                                                         <strong>${post['profile_name']}</strong> <small>@${post['username']}</small> <small>${time_before}</small>
                                                         <br>
                                                         ${post['comment']}
