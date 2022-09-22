@@ -13,7 +13,7 @@ app.config['UPLOAD_FOLDER'] = "./static/profile_pics"
 
 SECRET_KEY = 'SPARTA'
 
-client = MongoClient('43.201.23.207', 27017, username="test", password="test")
+client = MongoClient('13.125.249.142', 27017, username="test", password="test")
 db = client.dbsparta_plus_week4
 
 
@@ -138,12 +138,13 @@ def posting():
         # print(commend_list)
         # print(type(date_receive))
         # num_list = sorted(commend_list, key=lambda k:k['num'])
-        print(commend_list)
+        # print(commend_list)
         num_lists = list(commend['num'] for commend in commend_list)
         int_list = map(int, num_lists)
         num_list = sorted(int_list)
         num_last = num_list[-1]
         num = num_last+1
+        # num = count+1
         title_receive = request.form["title_give"]
         url_receive = request.form["url_give"]
         doc = {
